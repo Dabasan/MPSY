@@ -58,7 +58,7 @@ mpsy.exe -h
 という順番で行われます。
 このため、移動や回転を同時に行うと、想定通りの結果が得られない場合があります。
 
-
+------
 
 このプログラムには[JXM (Java XOPSManipulator)](https://github.com/Dabasan/jxm)が使用されています。
 JavaがインストールされていないWindowsマシンでも動作するように、Windows用のJREが同封されています。
