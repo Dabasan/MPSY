@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"os/exec"
@@ -26,14 +25,11 @@ func main() {
 		panic(err)
 	}
 
-	//コマンドライン引数の解析を行う。
-	flag.Parse()
-
 	//mpsy.jarを実行する。
 	args := make([]string, 2)
 	args[0] = "-jar"
 	args[1] = "mpsy.jar"
-	args = append(args, flag.Args()...)
+	args = append(args, os.Args...)
 
 	cmd := exec.Command("java", args...)
 	output, err := cmd.CombinedOutput()
