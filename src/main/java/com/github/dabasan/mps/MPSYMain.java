@@ -32,23 +32,23 @@ public class MPSYMain {
 		var optionBo = new Option("bo", "bd1FilepathOut", true, "Output filepath of a BD1 file");
 		var optionPo = new Option("po", "pd1FilepathOut", true, "Output filepath of a PD1 file");
 		// オプション引数
-		var optionT = new Option("t", "translation", true, "Amount of translation (x, y, z)");
-		var optionS = new Option("s", "scale", true, "Scale (x, y, z)");
-		var optionRX = new Option("rx", "rotX", true,
-				"Amount of rotation around the X-axis (radian)");
-		var optionRY = new Option("ry", "rotY", true,
-				"Amount of rotation around the Y-axis (radian)");
-		var optionRZ = new Option("rz", "rotZ", true,
-				"Amount of rotation around the Z-axis (radian)");
+		var optionT = new Option("t", "translation", true, "Amount of translation [x y z]");
+		var optionS = new Option("s", "scale", true, "Scale [x y z]");
+		var optionRX = new Option("rx", "rotX", true, "Angle of rotation around the X-axis");
+		var optionRY = new Option("ry", "rotY", true, "Angle of rotation around the Y-axis");
+		var optionRZ = new Option("rz", "rotZ", true, "Angle of rotation around the Z-axis");
 		var optionR = new Option("r", "rot", true,
-				"Amount of rotation around an arbitrary axis (axisX, axisY, axisZ, angle (radian))");
+				"Angle of rotation around an arbitrary axis [axisX axisY axisZ angle]");
 		var optionZ = new Option("z", "invertZ", false, "Inverts Z-axis");
-		var optionH = new Option("h", "help", false, "Help");
-		var optionV = new Option("v", "version", false, "Version");
+		var optionH = new Option("h", "help", false, "Displays help");
+		var optionV = new Option("v", "version", false, "Displays version info");
 
 		optionT.setArgs(3);
 		optionS.setArgs(3);
 		optionR.setArgs(4);
+		optionZ.setArgs(0);
+		optionH.setArgs(0);
+		optionV.setArgs(0);
 
 		options.addOption(optionBi);
 		options.addOption(optionPi);
@@ -78,6 +78,7 @@ public class MPSYMain {
 		if (cmd.hasOption("h")) {
 			var hf = new HelpFormatter();
 			hf.printHelp("[options]", options);
+			System.out.println("Specify angles in degree.");
 
 			return;
 		}
@@ -109,31 +110,52 @@ public class MPSYMain {
 		String pd1FilepathIn = cmd.getOptionValue("pi");
 		String bd1FilepathOut = cmd.getOptionValue("bo");
 		String pd1FilepathOut = cmd.getOptionValue("po");
-		String strTranslation = cmd.getOptionValue("t", "0.0 0.0 0.0");
-		String strScale = cmd.getOptionValue("s", "1.0 1.0 1.0");
+		String[] strTranslation = cmd.getOptionValues("t");
+		String[] strScale = cmd.getOptionValues("s");
 		String strRotX = cmd.getOptionValue("rx");
 		String strRotY = cmd.getOptionValue("ry");
 		String strRotZ = cmd.getOptionValue("rz");
-		String strRot = cmd.getOptionValue("r", "1.0 1.0 1.0 0.0");
+		String[] strRot = cmd.getOptionValues("r");
 		boolean invertZ = cmd.hasOption("z");
 
 		// 文字列を数値に変換する。
-		String[] splitsTranslation = strTranslation.split(" ");
-		var translation = new Vector(Double.parseDouble(splitsTranslation[0]),
-				Double.parseDouble(splitsTranslation[1]), Double.parseDouble(splitsTranslation[2]));
+		var translation = new Vector();
+		if (strTranslation != null) {
+			translation.set(Double.parseDouble(strTranslation[0]),
+					Double.parseDouble(strTranslation[1]), Double.parseDouble(strTranslation[2]));
+		}
 
-		String[] splitsScale = strScale.split(" ");
-		var scale = new Vector(Double.parseDouble(splitsScale[0]),
-				Double.parseDouble(splitsScale[1]), Double.parseDouble(splitsScale[2]));
+		var scale = new Vector(1.0, 1.0, 1.0);
+		if (strScale != null) {
+			scale.set(Double.parseDouble(strScale[0]), Double.parseDouble(strScale[1]),
+					Double.parseDouble(strScale[2]));
+		}
 
-		double rotX = Double.parseDouble(strRotX);
-		double rotY = Double.parseDouble(strRotY);
-		double rotZ = Double.parseDouble(strRotZ);
+		double rotX = 0.0;
+		double rotY = 0.0;
+		double rotZ = 0.0;
+		if (strRotX != null) {
+			rotX = Double.parseDouble(strRotX);
+			rotX = convertDegToRad(rotX);
+		}
+		if (strRotY != null) {
+			rotY = Double.parseDouble(strRotY);
+			rotY = convertDegToRad(rotY);
+		}
+		if (strRotZ != null) {
+			rotZ = Double.parseDouble(strRotZ);
+			rotZ = convertDegToRad(rotZ);
+		}
 
-		String[] splitsRot = strRot.split(" ");
-		var rotAxis = new Vector(Double.parseDouble(splitsRot[0]), Double.parseDouble(splitsRot[1]),
-				Double.parseDouble(splitsRot[2]));
-		double rotAngle = Double.parseDouble(splitsRot[3]);
+		var rotAxis = new Vector(1.0, 1.0, 1.0);
+		double rotAngle = 0.0;
+		if (strRot != null) {
+			rotAxis.set(Double.parseDouble(strRot[0]), Double.parseDouble(strRot[1]),
+					Double.parseDouble(strRot[2]));
+			rotAngle = Double.parseDouble(strRot[3]);
+
+			rotAngle = convertDegToRad(rotAngle);
+		}
 
 		// 実際にマップとポイントに処理を適用する。
 		BD1Manipulator bd1Manipulator;
@@ -161,5 +183,9 @@ public class MPSYMain {
 
 		bd1Manipulator.saveAsBD1(bd1FilepathOut);
 		pd1Manipulator.saveAsPD1(pd1FilepathOut);
+	}
+
+	private static double convertDegToRad(double deg) {
+		return Math.PI / 180.0 * deg;
 	}
 }
