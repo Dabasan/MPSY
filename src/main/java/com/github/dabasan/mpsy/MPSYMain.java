@@ -1,4 +1,4 @@
-package com.github.dabasan.mps;
+package com.github.dabasan.mpsy;
 
 import java.io.IOException;
 
