@@ -20,7 +20,7 @@ import com.github.dabasan.jxm.pd1.PD1Manipulator;
  *
  */
 public class MPSYMain {
-	public static final String VERSION_STR = "MPSY v0.0.1";
+	public static final String VERSION_STR = "MPSY v0.1.0";
 
 	public static void main(String[] args) {
 		// コマンドライン引数を解析するための設定
@@ -88,21 +88,17 @@ public class MPSYMain {
 			return;
 		}
 
-		// 必須引数がない場合にはエラー
-		if (!cmd.hasOption("bi")) {
-			System.err.println("Java-side error: Missing required option: bi");
-			return;
+		boolean mBD1 = false;
+		boolean mPD1 = false;
+		if (cmd.hasOption("bi") && cmd.hasOption("bo")) {
+			mBD1 = true;
 		}
-		if (!cmd.hasOption("pi")) {
-			System.err.println("Java-side error: Missing required option: pi");
-			return;
+		if (cmd.hasOption("pi") && cmd.hasOption("po")) {
+			mPD1 = true;
 		}
-		if (!cmd.hasOption("bo")) {
-			System.err.println("Java-side error: Missing required option: bo");
-			return;
-		}
-		if (!cmd.hasOption("po")) {
-			System.err.println("Java-side error: Missing required option: po");
+
+		// BD1もPD1も操作しない場合にはプログラムを終了する。
+		if (!mBD1 && !mPD1) {
 			return;
 		}
 
@@ -158,11 +154,15 @@ public class MPSYMain {
 		}
 
 		// 実際にマップとポイントに処理を適用する。
-		BD1Manipulator bd1Manipulator;
-		PD1Manipulator pd1Manipulator;
+		BD1Manipulator bd1Manipulator = null;
+		PD1Manipulator pd1Manipulator = null;
 		try {
-			bd1Manipulator = new BD1Manipulator(bd1FilepathIn);
-			pd1Manipulator = new PD1Manipulator(pd1FilepathIn);
+			if (mBD1) {
+				bd1Manipulator = new BD1Manipulator(bd1FilepathIn);
+			}
+			if (mPD1) {
+				pd1Manipulator = new PD1Manipulator(pd1FilepathIn);
+			}
 		} catch (IOException e) {
 			System.err.println("Java-side error: Failed to open file.");
 			e.printStackTrace();
@@ -170,19 +170,28 @@ public class MPSYMain {
 			return;
 		}
 
-		bd1Manipulator.translate(translation.getX(), translation.getY(), translation.getZ())
-				.rescale(scale.getX(), scale.getY(), scale.getZ()).rotX(rotX).rotY(rotY).rotZ(rotZ)
-				.rot(rotAxis.getX(), rotAxis.getY(), rotAxis.getZ(), rotAngle);
-		pd1Manipulator.translate(translation.getX(), translation.getY(), translation.getZ())
-				.rescale(scale.getX(), scale.getY(), scale.getZ()).rotX(rotX).rotY(rotY).rotZ(rotZ)
-				.rot(rotAxis.getX(), rotAxis.getY(), rotAxis.getZ(), rotAngle);
-		if (invertZ) {
-			bd1Manipulator.invertZ();
-			pd1Manipulator.invertZ();
-		}
+		if (mBD1) {
+			bd1Manipulator.translate(translation.getX(), translation.getY(), translation.getZ())
+					.rescale(scale.getX(), scale.getY(), scale.getZ()).rotX(rotX).rotY(rotY)
+					.rotZ(rotZ).rot(rotAxis.getX(), rotAxis.getY(), rotAxis.getZ(), rotAngle);
 
-		bd1Manipulator.saveAsBD1(bd1FilepathOut);
-		pd1Manipulator.saveAsPD1(pd1FilepathOut);
+			if (invertZ) {
+				bd1Manipulator.invertZ();
+			}
+
+			bd1Manipulator.saveAsBD1(bd1FilepathOut);
+		}
+		if (mPD1) {
+			pd1Manipulator.translate(translation.getX(), translation.getY(), translation.getZ())
+					.rescale(scale.getX(), scale.getY(), scale.getZ()).rotX(rotX).rotY(rotY)
+					.rotZ(rotZ).rot(rotAxis.getX(), rotAxis.getY(), rotAxis.getZ(), rotAngle);
+
+			if (invertZ) {
+				pd1Manipulator.invertZ();
+			}
+
+			pd1Manipulator.saveAsPD1(pd1FilepathOut);
+		}
 	}
 
 	private static double convertDegToRad(double deg) {
