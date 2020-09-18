@@ -32,13 +32,13 @@ public class MPSYMain {
 		var optionBo = new Option("bo", "bd1FilepathOut", true, "Output filepath of a BD1 file");
 		var optionPo = new Option("po", "pd1FilepathOut", true, "Output filepath of a PD1 file");
 		// オプション引数
-		var optionT = new Option("t", "translation", true, "Amount of translation [x y z]");
-		var optionS = new Option("s", "scale", true, "Scale [x y z]");
+		var optionT = new Option("t", "translation", true, "Amount of translation [x, y, z]");
+		var optionS = new Option("s", "scale", true, "Scale [x, y, z]");
 		var optionRX = new Option("rx", "rotX", true, "Angle of rotation around the X-axis");
 		var optionRY = new Option("ry", "rotY", true, "Angle of rotation around the Y-axis");
 		var optionRZ = new Option("rz", "rotZ", true, "Angle of rotation around the Z-axis");
 		var optionR = new Option("r", "rot", true,
-				"Angle of rotation around an arbitrary axis [axisX axisY axisZ angle]");
+				"Angle of rotation around an arbitrary axis [axisX, axisY, axisZ, angle]");
 		var optionZ = new Option("z", "invertZ", false, "Inverts Z-axis");
 		var optionH = new Option("h", "help", false, "Displays help");
 		var optionV = new Option("v", "version", false, "Displays version info");
