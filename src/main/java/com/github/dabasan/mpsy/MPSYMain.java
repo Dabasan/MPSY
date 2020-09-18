@@ -26,12 +26,10 @@ public class MPSYMain {
 		// コマンドライン引数を解析するための設定
 		var options = new Options();
 
-		// 必須引数
 		var optionBi = new Option("bi", "bd1FilepathIn", true, "Input filepath of a BD1 file");
 		var optionPi = new Option("pi", "pd1FilepathIn", true, "Input filepath of a PD1 file");
 		var optionBo = new Option("bo", "bd1FilepathOut", true, "Output filepath of a BD1 file");
 		var optionPo = new Option("po", "pd1FilepathOut", true, "Output filepath of a PD1 file");
-		// オプション引数
 		var optionT = new Option("t", "translation", true, "Amount of translation [x, y, z]");
 		var optionS = new Option("s", "scale", true, "Scale [x, y, z]");
 		var optionRX = new Option("rx", "rotX", true, "Angle of rotation around the X-axis");
