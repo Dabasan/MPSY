@@ -29,17 +29,17 @@ XOPSのマップとポイントに対して拡大や回転などの処理を行�
 ### マップとポイントの操作
 
 ```
-mpsy.exe \
-	-bi map.pd1 \
-	-pi points.pd1 \
-	-bo map2.bd1 \
-	-po points2.pd1 \
-	-t 50.0 50.0 50.0 \
-	-s 2.0 2.0 2.0 \
-	-rx 45 \
-	-ry 45 \
-	-rz 45 \
-	-r 1.0 1.0 1.0 45 \
+mpsy.exe ^
+	-bi map.pd1 ^
+	-pi points.pd1 ^
+	-bo map2.bd1 ^
+	-po points2.pd1 ^
+	-t 50.0 50.0 50.0 ^
+	-s 2.0 2.0 2.0 ^
+	-rx 45 ^
+	-ry 45 ^
+	-rz 45 ^
+	-r 1.0 1.0 1.0 45 ^
 	-z
 ```
 
