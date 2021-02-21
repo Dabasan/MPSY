@@ -10,22 +10,23 @@ import (
 func main() {
 	var err error
 
-	//JREのディレクトリ名を絶対パスに変換する。
-	pathJRE, err := filepath.Abs(".\\jre\\bin")
+	//JREのディレクトリ名を絶対パスに変換する
+	relPathJRE := filepath.Join(".", "jre", "bin")
+	absPathJRE, err := filepath.Abs(relPathJRE)
 	if err != nil {
 		panic(err)
 	}
 
-	//JREのディレクトリをPATHに追加する。
+	//JREのディレクトリをPATHに追加する
 	paths := os.Getenv("PATH")
-	paths = pathJRE + ";" + paths
+	paths = absPathJRE + ";" + paths
 
 	err = os.Setenv("PATH", paths)
 	if err != nil {
 		panic(err)
 	}
 
-	//mpsy.jarを実行する。
+	//mpsy.jarを実行する
 	args := make([]string, 2)
 	args[0] = "-jar"
 	args[1] = "mpsy.jar"
@@ -33,10 +34,13 @@ func main() {
 
 	cmd := exec.Command("java", args...)
 	output, err := cmd.CombinedOutput()
+	strOutput := string(output)
 	if err != nil {
-		fmt.Println(fmt.Sprint(err) + ": " + string(output))
+		fmt.Fprintf(os.Stderr, "%v: %v", err, strOutput)
 		return
 	}
 
-	fmt.Println(string(output))
+	if len(strOutput) != 0 {
+		fmt.Print(strOutput)
+	}
 }
