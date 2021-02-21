@@ -10,16 +10,10 @@ import (
 func main() {
 	var err error
 
-	//JREのディレクトリ名を絶対パスに変換する
-	relPathJRE := filepath.Join(".", "JRE", "bin")
-	absPathJRE, err := filepath.Abs(relPathJRE)
-	if err != nil {
-		panic(err)
-	}
-
 	//JREのディレクトリをPATHに追加する
+	pathJRE := filepath.Join(".", "JRE", "bin")
 	paths := os.Getenv("PATH")
-	paths = absPathJRE + ";" + paths
+	paths = pathJRE + ";" + paths
 
 	err = os.Setenv("PATH", paths)
 	if err != nil {
