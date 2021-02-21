@@ -11,7 +11,7 @@ func main() {
 	var err error
 
 	//JREのディレクトリ名を絶対パスに変換する
-	relPathJRE := filepath.Join(".", "jre", "bin")
+	relPathJRE := filepath.Join(".", "JRE", "bin")
 	absPathJRE, err := filepath.Abs(relPathJRE)
 	if err != nil {
 		panic(err)
