@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 	<name>mpsy</name>
 	<description>マップとポイントを操作するやつ</description>
-	<url>https://github.com/Dabasan/mpsy</url>
+	<url>https://github.com/Dabasan/MPSY</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
