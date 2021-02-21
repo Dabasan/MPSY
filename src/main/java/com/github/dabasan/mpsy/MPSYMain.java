@@ -36,7 +36,7 @@ public class MPSYMain {
 		var optionRY = new Option("ry", "rotY", true, "Amount of rotation around the Y-axis");
 		var optionRZ = new Option("rz", "rotZ", true, "Amount of rotation around the Z-axis");
 		var optionR = new Option("r", "rot", true,
-				"Amount of rotation around an arbitrary axis [axisX, axisY, axisZ, angle]");
+				"Amount of rotation around an arbitrary axis [amount, axisX, axisY, axisZ]");
 		var optionZ = new Option("z", "invertZ", false, "Inverts Z-axis");
 		var optionH = new Option("h", "help", false, "Displays help");
 		var optionV = new Option("v", "version", false, "Displays version info");
@@ -146,11 +146,10 @@ public class MPSYMain {
 		var rotAxis = new Vector3f(1.0f, 1.0f, 1.0f);
 		float rotAngle = 0.0f;
 		if (strRot != null) {
-			rotAxis.x = Float.parseFloat(strRot[0]);
-			rotAxis.y = Float.parseFloat(strRot[1]);
-			rotAxis.z = Float.parseFloat(strRot[2]);
-
-			rotAngle = (float) Math.toRadians(rotAngle);
+			rotAngle = (float) Math.toRadians(Float.parseFloat(strRot[0]));
+			rotAxis.x = Float.parseFloat(strRot[1]);
+			rotAxis.y = Float.parseFloat(strRot[2]);
+			rotAxis.z = Float.parseFloat(strRot[3]);
 		}
 
 		// 実際にマップとポイントに処理を適用する
@@ -173,7 +172,7 @@ public class MPSYMain {
 		if (mBD1) {
 			bd1Manipulator.translate(translation.x, translation.y, translation.z)
 					.rescale(scale.x, scale.y, scale.z).rotX(rotX).rotY(rotY).rotZ(rotZ)
-					.rot(rotAxis.x, rotAxis.y, rotAxis.z, rotAngle);
+					.rot(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
 
 			if (invertZ) {
 				bd1Manipulator.invertZ();
@@ -184,7 +183,7 @@ public class MPSYMain {
 		if (mPD1) {
 			pd1Manipulator.translate(translation.x, translation.y, translation.z)
 					.rescale(scale.x, scale.y, scale.z).rotX(rotX).rotY(rotY).rotZ(rotZ)
-					.rot(rotAxis.x, rotAxis.y, rotAxis.z, rotAngle);
+					.rot(rotAngle, rotAxis.x, rotAxis.y, rotAxis.z);
 
 			if (invertZ) {
 				pd1Manipulator.invertZ();
