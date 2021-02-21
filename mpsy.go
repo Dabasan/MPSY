@@ -34,12 +34,11 @@ func main() {
 
 	cmd := exec.Command("java", args...)
 	output, err := cmd.CombinedOutput()
-	strOutput := string(output)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v: %v", err, strOutput)
-		return
+		panic(err)
 	}
 
+	strOutput := string(output)
 	if len(strOutput) != 0 {
 		fmt.Print(strOutput)
 	}
