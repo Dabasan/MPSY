@@ -1,17 +1,11 @@
 package com.github.dabasan.mpsy;
 
-import java.io.IOException;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
-import org.joml.Vector3f;
-
 import com.github.dabasan.jxm.bd1.BD1Manipulator;
 import com.github.dabasan.jxm.pd1.PD1Manipulator;
+import org.apache.commons.cli.*;
+import org.joml.Vector3f;
+
+import java.io.IOException;
 
 /**
  * Main
@@ -19,7 +13,7 @@ import com.github.dabasan.jxm.pd1.PD1Manipulator;
  * @author Daba
  */
 public class MPSYMain {
-    public static final String VERSION_STR = "MPSY v1.0.0-rc3";
+    public static final String VERSION_STR = "MPSY v1.0.0";
 
     public static void main(String[] args) {
         // コマンドライン引数を解析するための設定
