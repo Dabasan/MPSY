@@ -13,7 +13,7 @@ import java.io.IOException;
  * @author Daba
  */
 public class MPSYMain {
-    public static final String VERSION_STR = "MPSY v1.0.0";
+    public static final String VERSION_STR = "MPSY v1.0.1";
 
     public static void main(String[] args) {
         // コマンドライン引数を解析するための設定
